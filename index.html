@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Weather App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Weather App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About this App</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Quick Weather
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">New Delhi</a></li>
+                <li><a class="dropdown-item" href="#">Bhopal</a></li>
+                <li><a class="dropdown-item" href="#">Bangalore</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">See wind condition</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">How to Use?</a>
+            </li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" id="city" type="search" placeholder="City Name" aria-label="Search">
+            <button onclick="getWeather()" class="btn btn-outline-success" type="button" >Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+
+    <div class="container py-3">
+      <h1 class="my-4 text-center">Weather for <span id="city-name"></span></h1>
+      <div id="loading" class="d-none text-center my-4">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <main>
+        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+          <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+              <div class="card-header py-3">
+                <h4 class="my-0 fw-normal">Temperature</h4>
+              </div>
+              <div class="card-body">
+                <h1 class="card-title pricing-card-title"><span id="temp_c_val"></span><small class="text-body-secondary fw-light">&#176;C</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                  <li>Temperature in &#176;C : <span id="temp_c"></span></li>
+                  <li>Temperature in &#176;F : <span id="temp_f"></span></li>
+                  <li>Condition : <span id="condition"></span></li>
+                
+                </ul>
+                <a href="https://www.accuweather.com/en/in/bhopal/204408/current-weather/204408" target="_blank">
+                    <button type="button" class="w-100 btn btn-lg btn-outline-primary">See More Details</button>
+                  </a>              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+              <div class="card-header py-3">
+                <h4 class="my-0 fw-normal">Humidity</h4>
+              </div>
+              <div class="card-body">
+                <h1 class="card-title pricing-card-title"><span id="humidity_val"></span><small class="text-body-secondary fw-light">%</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                  <li>Humidity : <span id="humidity"></span></li>
+                  <li>Feels like in &#176;C : <span id="feelslike_c"></span></li>
+                  <li>Feels like in &#176;F : <span id="feelslike_f"></span></li>
+                </ul>
+                <button type="button" class="w-100 btn btn-lg btn-outline-primary">See More Details</button>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+              <div class="card-header py-3">
+                <h4 class="my-0 fw-normal">Wind</h4>
+              </div>
+              <div class="card-body">
+                <h1 class="card-title pricing-card-title"><span id="wind_kph_val"></span><small class="text-body-secondary fw-light">km/hr</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                  <li>Wind Speed : <span id="wind_kph"></span> </li>
+                  <li>Wind Direction : <span id="wind_dir"></span> </li>
+                  <li>Wind Degree : <span id="wind_degree"></span> </li>
+                </ul>
+                <button type="button" class="w-100 btn btn-lg btn-outline-primary">See More Details</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <h2 class="display-6 text-center mb-4">Weather across Major Cities India</h2>
+    
+        <!--  --><div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th style="width: 15%;"></th>
+                <th style="width: 12%;">Temperature</th>
+                <th style="width: 12%;">Wind speed</th>
+                <th style="width: 12%;">Cloud</th>
+                <th style="width: 12%;">Humidity</th>
+                <th style="width: 12%;">Heat Index</th>
+                <th style="width: 12%;">Wind Direction</th>
+                <th style="width: 12%;">UV</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr> <!--Delhi-->
+                <th scope="row" class="text-start">New Delhi</th>
+                <td><span id="new delhi_temperature"></span> &#176;C</td>
+                <td><span id="new delhi_wind_speed"></span></td>
+                <td><span id="new delhi_cloud"></span></td>
+                <td><span id="new delhi_humidity"></span></td>
+                <td><span id="new delhi_heat_index"></span></td>
+                <td><span id="new delhi_wind_direction"></span></td>
+                <td><span id="new delhi_uv"></span></td>
+              </tr>
+
+              <tr> <!--Mumbai-->
+                <th scope="row" class="text-start">Mumbai</th>
+                <td><span id="mumbai_temperature"></span> &#176;C</td>
+                <td><span id="mumbai_wind_speed"></span></td>
+                <td><span id="mumbai_cloud"></span></td>
+                <td><span id="mumbai_humidity"></span></td>
+                <td><span id="mumbai_heat_index"></span></td>
+                <td><span id="mumbai_wind_direction"></span></td>
+                <td><span id="mumbai_uv"></span></td>
+              </tr>
+
+              <tr> <!--Pune-->
+                <th scope="row" class="text-start">Pune</th>
+                <td><span id="pune_temperature"></span> &#176;C</td>
+                <td><span id="pune_wind_speed"></span></td>
+                <td><span id="pune_cloud"></span></td>
+                <td><span id="pune_humidity"></span></td>
+                <td><span id="pune_heat_index"></span></td>
+                <td><span id="pune_wind_direction"></span></td>
+                <td><span id="pune_uv"></span></td>
+              </tr>
+
+              <tr> <!--Calcuta-->
+                <th scope="row" class="text-start">Calcuta</th>
+                <td><span id="calcuta_temperature"></span> &#176;C</td>
+                <td><span id="calcuta_wind_speed"></span></td>
+                <td><span id="calcuta_cloud"></span></td>
+                <td><span id="calcuta_humidity"></span></td>
+                <td><span id="calcuta_heat_index"></span></td>
+                <td><span id="calcuta_wind_direction"></span></td>
+                <td><span id="calcuta_uv"></span></td>
+              </tr>
+
+              <tr> <!--Chennai-->
+                <th scope="row" class="text-start">Chennai</th>
+                <td><span id="chennai_temperature"></span> &#176;C</td>
+                <td><span id="chennai_wind_speed"></span></td>
+                <td><span id="chennai_cloud"></span></td>
+                <td><span id="chennai_humidity"></span></td>
+                <td><span id="chennai_heat_index"></span></td>
+                <td><span id="chennai_wind_direction"></span></td>
+                <td><span id="chennai_uv"></span></td>
+              </tr>
+
+              <tr> <!--Hyderabad-->
+                <th scope="row" class="text-start">Hyderabad</th>
+                <td><span id="hyderabad_temperature"></span> &#176;C</td>
+                <td><span id="hyderabad_wind_speed"></span></td>
+                <td><span id="hyderabad_cloud"></span></td>
+                <td><span id="hyderabad_humidity"></span></td>
+                <td><span id="hyderabad_heat_index"></span></td>
+                <td><span id="hyderabad_wind_direction"></span></td>
+                <td><span id="hyderabad_uv"></span></td>
+              </tr>
+            </tbody>
+    
+            
+          </table>
+        </div>
+
+        
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src = "script.js"></script>
+</body>
+</html>
+
+
